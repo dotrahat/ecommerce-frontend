@@ -1,33 +1,39 @@
 import { ProductProps } from "@/types/productProps";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const SingleProduct = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState({} as ProductProps);
-
-  const fetchProduct = async () => {
-    try {
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-      const data: ProductProps = await response.json();
-      console.log(data);
-      setProduct(data);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  };
+  const { id } = useParams<string>();
+  const [product, setProduct] = useState<ProductProps | null>();
 
   useEffect(() => {
-    console.log(id);
-    fetchProduct();
-  }, []);
+    (async () => {
+      try {
+        const { data } = await axios.get(
+          `https://fakestoreapi.com/products/${id}`,
+        );
+        console.log(data);
+        setProduct(data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    })();
+  }, [id]);
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
           <div className="mx-auto max-w-md shrink-0 lg:max-w-lg">
-            <img className="w-full dark:hidden" src={product.image} />
+            <img
+              className="w-full dark:hidden"
+              src={
+                product
+                  ? product.image
+                  : "https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
+              }
+            />
             <img
               className="hidden w-full dark:block"
               src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
@@ -35,11 +41,11 @@ const SingleProduct = () => {
           </div>
           <div className="mt-6 sm:mt-8 lg:mt-0">
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-              {product.title}
+              {product ? product.title : ""}
             </h1>
             <div className="mt-4 sm:flex sm:items-center sm:gap-4">
               <p className="text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">
-                {product.price}
+                {product ? product.price : ""}
               </p>
               <div className="mt-2 flex items-center gap-2 sm:mt-0">
                 <div className="flex items-center gap-1">
@@ -100,13 +106,13 @@ const SingleProduct = () => {
                   </svg>
                 </div>
                 <p className="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">
-                  ({product.rating.rate})
+                  ({product ? product.rating.rate : ""})
                 </p>
                 <a
                   href="#"
                   className="text-sm font-medium leading-none text-gray-900 underline hover:no-underline dark:text-white"
                 >
-                  {product.rating.count} Reviews
+                  {product ? product.rating.count : ""} Reviews
                 </a>
               </div>
             </div>
@@ -133,7 +139,7 @@ const SingleProduct = () => {
                     d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
                   />
                 </svg>
-                Add to favorites
+                Add to Cart
               </a>
               <a
                 href="#"
@@ -162,12 +168,12 @@ const SingleProduct = () => {
             </div>
             <hr className="my-6 border-gray-200 dark:border-gray-800 md:my-8" />
             <p className="mb-6 text-gray-500 dark:text-gray-400">
-              {product.description}
+              {product ? product.description : ""}
             </p>
             <p className="text-gray-500 dark:text-gray-400">
               The following text is duplicated intentionally in code for
               showcasing better UI with two paragraphs and to avoid thin
-              content. {product.description}
+              content. {product ? product.description : ""}
             </p>
           </div>
         </div>

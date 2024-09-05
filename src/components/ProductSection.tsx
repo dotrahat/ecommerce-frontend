@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { Link } from "react-router-dom";
 import { ProductProps as Product } from "@/types/productProps";
+import axios from "axios";
 
 const ProductsSection = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
+    axios
+      .get("https://fakestoreapi.com/products")
+      .then((res) => setProducts(res.data));
   }, []);
 
   return (
