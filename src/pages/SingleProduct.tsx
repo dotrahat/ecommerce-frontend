@@ -2,10 +2,13 @@ import { ProductProps } from "@/types/productProps";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { addToCart } from "@/redux/actions";
+import { useDispatch } from "react-redux";
 
 const SingleProduct = () => {
   const { id } = useParams<string>();
   const [product, setProduct] = useState<ProductProps | null>();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -20,6 +23,15 @@ const SingleProduct = () => {
       }
     })();
   }, [id]);
+
+  const handleAddToCart = () => {
+    // Logic to add the product to the cart
+    if (id) {
+      // using any to temporarily run this without issues - will fix later
+      const addToCartAction: any = addToCart(id, 1);
+      dispatch(addToCartAction);
+    }
+  };
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -117,33 +129,9 @@ const SingleProduct = () => {
               </div>
             </div>
             <div className="mt-6 sm:mt-8 sm:flex sm:items-center sm:gap-4">
-              <a
-                href="#"
-                className="hover:text-primary-700 flex items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-                role="button"
-              >
-                <svg
-                  className="-ms-2 me-2 h-5 w-5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={24}
-                  height={24}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                  />
-                </svg>
-                Add to Cart
-              </a>
-              <a
-                href="#"
-                className="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 sm:mt-0"
+              <button
+                onClick={handleAddToCart}
+                className="focus:ring-primary-300 dark:bg-primary-600 dark:focus:ring-primary-800 mt-4 flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-4 dark:hover:bg-primary sm:mt-0"
                 role="button"
               >
                 <svg
@@ -164,7 +152,7 @@ const SingleProduct = () => {
                   />
                 </svg>
                 Add to cart
-              </a>
+              </button>
             </div>
             <hr className="my-6 border-gray-200 dark:border-gray-800 md:my-8" />
             <p className="mb-6 text-gray-500 dark:text-gray-400">

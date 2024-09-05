@@ -1,5 +1,4 @@
 // Actions for Add to cart functionality
-
 import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
@@ -7,17 +6,19 @@ import {
   CLEAR_CART,
 } from "./types";
 
-interface ClearCartAction {
+export interface ClearCartAction {
   type: string;
 }
 
-export interface Actions extends ClearCartAction {
+export interface BaseActions {
   type: string;
   payload: {
     productId: string;
     quantity: number;
   };
 }
+
+export type Actions = BaseActions | ClearCartAction;
 
 const addToCart = (productId: string, quantity: number): Actions => {
   return {
@@ -49,7 +50,7 @@ const updateCartQuantity = (productId: string, quantity: number): Actions => {
   };
 };
 
-const clearCart = (): ClearCartAction => {
+const clearCart = (): Actions => {
   return {
     type: CLEAR_CART,
   };
