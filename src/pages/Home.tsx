@@ -1,5 +1,15 @@
+import Hero from "@/components/Hero";
+import Products from "@/components/ProductSection";
+import Promo from "@/components/Promo";
+
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <>
+      <Hero />
+      <Products />
+      <Promo />
+    </>
+  );
 };
 
 export default Home;

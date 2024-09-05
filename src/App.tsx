@@ -25,8 +25,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/blog/:slug" element={<SingleBlog />} />
-        <Route path="/product/:slug" element={<SingleProduct />} />
-        <Route path="/product-category/:slug" element={<SingleCategory />} />
+        <Route path="/product/:id" element={<SingleProduct />} />
+        <Route path="/product-category/:id" element={<SingleCategory />} />
       </Routes>
       <Footer />
     </>
