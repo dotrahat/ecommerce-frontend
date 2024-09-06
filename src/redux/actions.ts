@@ -2,25 +2,30 @@
 import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
-  UPDATE_CART_QUANTITY,
   CLEAR_CART,
-} from "./types";
+  INCREASE_QUANTITY,
+  DECREASE_QUANTITY,
+} from "@/redux/types";
 
 export interface ClearCartAction {
-  type: string;
+  (): { type: string };
 }
 
 export interface BaseActions {
   type: string;
   payload: {
-    productId: string;
+    productId: number;
     quantity: number;
   };
 }
 
 export type Actions = BaseActions | ClearCartAction;
 
-const addToCart = (productId: string, quantity: number): Actions => {
+interface ActionCreator {
+  (productId: number, quantity: number): BaseActions;
+}
+
+const addToCartActionCreator: ActionCreator = (productId, quantity) => {
   return {
     type: ADD_TO_CART,
     payload: {
@@ -30,7 +35,7 @@ const addToCart = (productId: string, quantity: number): Actions => {
   };
 };
 
-const removeFromCart = (productId: string, quantity: number): Actions => {
+const removeFromCartActionCreator: ActionCreator = (productId, quantity) => {
   return {
     type: REMOVE_FROM_CART,
     payload: {
@@ -40,9 +45,9 @@ const removeFromCart = (productId: string, quantity: number): Actions => {
   };
 };
 
-const updateCartQuantity = (productId: string, quantity: number): Actions => {
+const increaseQuantityActionCreator: ActionCreator = (productId, quantity) => {
   return {
-    type: UPDATE_CART_QUANTITY,
+    type: INCREASE_QUANTITY,
     payload: {
       productId,
       quantity,
@@ -50,10 +55,26 @@ const updateCartQuantity = (productId: string, quantity: number): Actions => {
   };
 };
 
-const clearCart = (): Actions => {
+const decreaseQuantityActionCreator: ActionCreator = (productId, quantity) => {
+  return {
+    type: DECREASE_QUANTITY,
+    payload: {
+      productId,
+      quantity,
+    },
+  };
+};
+
+const clearCartActionCreator: ClearCartAction = () => {
   return {
     type: CLEAR_CART,
   };
 };
 
-export { addToCart, removeFromCart, updateCartQuantity, clearCart };
+export {
+  addToCartActionCreator,
+  removeFromCartActionCreator,
+  increaseQuantityActionCreator,
+  decreaseQuantityActionCreator,
+  clearCartActionCreator,
+};
