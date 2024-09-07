@@ -4,12 +4,13 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductProps } from "@/types/productProps";
 import { addToCartActionCreator } from "@/redux/actions";
+import { CartItem } from "@/redux/reducer";
 
 const SingleProduct = () => {
   const { id } = useParams<string>();
   const [product, setProduct] = useState<ProductProps | null>();
   const dispatch = useDispatch();
-  const quantity = useSelector((state: any) => state);
+  const quantity = useSelector((state: CartItem[]) => state);
   console.log(quantity);
 
   useEffect(() => {
