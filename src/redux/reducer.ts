@@ -1,4 +1,4 @@
-import { BaseActions, ClearCartAction } from "@/redux/actions";
+import { BaseActions } from "@/redux/actions";
 import {
   ADD_TO_CART,
   CLEAR_CART,
@@ -71,18 +71,11 @@ export const cartReducer = (state = initialState, action: BaseActions) => {
         return cartItem;
       });
       break;
+    case CLEAR_CART:
+      return null;
+      break;
+
     default:
       return state;
   }
-};
-
-export const clearCartReducer = (
-  state = initialState,
-  action: ClearCartAction,
-) => {
-  if (action.type === CLEAR_CART) {
-    return null;
-  }
-
-  return state;
 };
