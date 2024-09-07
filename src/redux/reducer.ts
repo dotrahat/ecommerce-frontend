@@ -8,7 +8,7 @@ import {
 } from "@/redux/types";
 import { toast } from "sonner";
 
-interface CartItem {
+export interface CartItem {
   productId: number;
   quantity: number;
 }
