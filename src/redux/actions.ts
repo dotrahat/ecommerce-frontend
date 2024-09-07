@@ -7,8 +7,11 @@ import {
   DECREASE_QUANTITY,
 } from "@/redux/types";
 
-export interface ClearCartAction {
+export interface ClearCartActionCreator {
   (): { type: string };
+}
+export interface ClearCartAction {
+  type: string;
 }
 
 export interface BaseActions {
@@ -65,7 +68,7 @@ const decreaseQuantityActionCreator: ActionCreator = (productId, quantity) => {
   };
 };
 
-const clearCartActionCreator: ClearCartAction = () => {
+const clearCartActionCreator: ClearCartActionCreator = () => {
   return {
     type: CLEAR_CART,
   };

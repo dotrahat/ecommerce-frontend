@@ -6,9 +6,10 @@ import {
   INCREASE_QUANTITY,
   DECREASE_QUANTITY,
 } from "@/redux/types";
+import { toast } from "sonner";
 
 interface CartItem {
-  productId: string;
+  productId: number;
   quantity: number;
 }
 
@@ -16,16 +17,33 @@ interface CartItem {
 const initialState: CartItem[] = [];
 
 export const cartReducer = (state = initialState, action: BaseActions) => {
+  console.log("initialstate: ", state, action);
+
   switch (action.type) {
     case ADD_TO_CART:
-      return [
-        ...state,
-        {
-          [action.payload.productId]: action.payload.quantity
-            ? action.payload.quantity
-            : 1,
-        },
-      ];
+      if (
+        state.find((cartItem) =>
+          cartItem.productId === action.payload.productId ? true : false,
+        )
+      ) {
+        toast("Product already in cart - Increased Quantity");
+        return state.map((cartItem) => {
+          if (cartItem.productId === action.payload.productId) {
+            cartItem.quantity += 1;
+          }
+          return cartItem;
+        });
+      } else {
+        toast("Product added to cart");
+        return [
+          ...state,
+          {
+            productId: action.payload.productId,
+            quantity: 1,
+          },
+        ];
+      }
+
       break;
 
     case REMOVE_FROM_CART:
@@ -59,10 +77,12 @@ export const cartReducer = (state = initialState, action: BaseActions) => {
 };
 
 export const clearCartReducer = (
-  _state = initialState,
+  state = initialState,
   action: ClearCartAction,
 ) => {
   if (action.type === CLEAR_CART) {
-    return {};
+    return null;
   }
+
+  return state;
 };

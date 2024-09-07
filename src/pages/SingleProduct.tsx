@@ -1,14 +1,16 @@
-import { ProductProps } from "@/types/productProps";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { ProductProps } from "@/types/productProps";
 import { addToCartActionCreator } from "@/redux/actions";
-import { useDispatch } from "react-redux";
 
 const SingleProduct = () => {
   const { id } = useParams<string>();
   const [product, setProduct] = useState<ProductProps | null>();
   const dispatch = useDispatch();
+  const quantity = useSelector((state: any) => state);
+  console.log(quantity);
 
   useEffect(() => {
     (async () => {
@@ -28,7 +30,8 @@ const SingleProduct = () => {
     // Logic to add the product to the cart
     if (id) {
       // using any to temporarily run this without issues - will fix later
-      const addToCartAction: any = addToCartActionCreator(id, 1);
+      console.log(quantity);
+      const addToCartAction: any = addToCartActionCreator(Number(id), 1);
       dispatch(addToCartAction);
     }
   };

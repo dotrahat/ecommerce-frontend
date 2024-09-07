@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { store } from "@/redux/store.ts";
+import { store } from "@/redux/store";
 import { Provider } from "react-redux";
 import { Toaster } from "./components/ui/sonner.tsx";
 
